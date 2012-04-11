@@ -4,4 +4,4 @@ SimpleInterest is a simple way to aggregate interest in player iConomy accounts 
 
 === Compiling
 
-Maven 3 is required to compile TEMPLATE
+Maven 3 is required to compile SimpleInterest
