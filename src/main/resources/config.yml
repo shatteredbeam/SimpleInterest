@@ -1,3 +1,6 @@
 # SimpleInterest Config File
+#Interest rate should be a decimal below 1. Use 1 for 100% interest (double money)
 General:
     Version: 0.1
+    InterestRate: .031
+    

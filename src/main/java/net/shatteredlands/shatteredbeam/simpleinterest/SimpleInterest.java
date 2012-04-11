@@ -2,14 +2,15 @@ package net.shatteredlands.shatteredbeam.simpleinterest;
 
 
 import java.util.logging.Logger;
-
 import org.bukkit.event.Listener;
+import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.entity.Player;
 
 public class SimpleInterest extends JavaPlugin implements Listener {
 	private static final Logger log = Logger.getLogger("Minecraft");
@@ -55,5 +56,28 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	        perms = rsp.getProvider();
 	        return perms != null;
 	    }
+	 
+	 private void processInterest() {
+		 double bal, nbal, gained;
+		 
+		 /* Procedure:
+		  * 
+		  * Get list of online players
+		  * 
+		  * Loop: Pull Account Balance -> Calc interest -> Give Difference -> Notify Player.  Do Until no more players online.
+		  */
+		 
+		 //Online player list:
+		 
+		 
+		 for(Player player : getServer().getOnlinePlayers()) {
+			 bal = econ.getBalance(player.getPlayerListName());
+			 gained = bal * Config.interest;
+			 econ.depositPlayer(player.getPlayerListName(), gained);
+			 log.info("Player " + player.getPlayerListName() + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
+			}
+	
+		
+	 }
 
 }

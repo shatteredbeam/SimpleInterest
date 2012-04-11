@@ -4,3 +4,20 @@ version: ${project.version}
 softdepend: [Vault]
 author: Shatteredbeam
 description: SimpleInterest is a simple way to aggregate interest in player iConomy accounts at a regular interval.  Maven is required to compile Simple Interest.
+commands:
+    si:
+        description: Shows basic information and usage for SimpleInterest.
+        usage: |
+            /<command> (<modify>) [time|interest]
+
+permissions:
+    si.*:
+        description: Gives access to all SimpleInterest Commands.
+        children:
+            si.view: true
+            si.modify: true
+    si.view:
+        description: View current interest and time settings.  View Only.
+    si.modify:
+        default:op
+        description: Allows modification of interest and time settings.
