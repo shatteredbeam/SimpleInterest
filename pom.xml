@@ -8,7 +8,7 @@
         <url>https://github.com/shatteredbeam/SimpleInterest/issues</url>
     </issueManagement>
     <build>
-        <finalName>TEMPLATE</finalName>
+        <finalName>SimpleInterest</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -56,14 +56,21 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>Vault</id>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>LATEST</version>
-            <type>jar</type>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+        	<groupId>net.milkbowl.vault</groupId>
+        	<artifactId>Vault</artifactId>
+        	<version>1.2.15-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <properties>
