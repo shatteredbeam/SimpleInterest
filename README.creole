@@ -1,0 +1,7 @@
+== SimpleInterest
+
+SimpleInterest is a simple way to aggregate interest in player iConomy accounts at a regular interval.  Requires iConomy.
+
+=== Compiling
+
+Maven 3 is required to compile TEMPLATE
