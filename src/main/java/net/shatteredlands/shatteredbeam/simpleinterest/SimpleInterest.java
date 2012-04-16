@@ -2,6 +2,9 @@ package net.shatteredlands.shatteredbeam.simpleinterest;
 
 
 import java.util.logging.Logger;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,12 +19,6 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static Permission perms = null;
 	public static Economy econ = null;
-	
-	//Command Handling
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		if(event.getMessage().toLowerCase().startsWith("/si")) return;
-		}
 	
 	@Override
 	public void onEnable() {
@@ -43,6 +40,20 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 		// Perform on plugin disable.
 		
 		log.info(getDescription().getFullName() + " Unloaded.");
+	}
+	
+	 
+	 public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	 		Player player = null;
+	 			if (sender instanceof Player) {
+	 				player = (Player) sender;
+	 			}
+	 			
+	 			if(command.getName().equalsIgnoreCase("si")) {
+	 				sender.sendMessage(ChatColor.YELLOW + "[ = = = Simple Interest = = = = ]");
+	 				return true;
+	 			}
+	 return false;			
 	}
 	
 	 private boolean setupEconomy() {
@@ -73,5 +84,12 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 			 	econ.depositPlayer(player.getPlayerListName(), gained);
 			 	log.info("Player " + player.getPlayerListName() + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
 		}
-	}
-}
+	 }
+	 }
+
+
+
+
+
+
+
