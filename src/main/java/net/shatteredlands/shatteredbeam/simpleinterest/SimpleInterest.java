@@ -6,8 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,21 +41,43 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	}
 	
 	 @Override
+	 @SuppressWarnings("unused")
 	 public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	 			if(command.getName().equalsIgnoreCase("si")) {
 	 				
 	 				if (sender instanceof Player) {
 	 					Player player = (Player) sender;
-	 					sender.sendMessage(ChatColor.YELLOW + "Simple Interest:");
+	 					
+	 					if(args[0].equalsIgnoreCase("run")) {
+	 						processInterest();
+	 						sender.sendMessage("Interest cycle forced");
+	 					}
+	 					
+	 					if(args.length != 1) {
+	 						sender.sendMessage(ChatColor.YELLOW + "Simple Interest:");
+	 						sender.sendMessage(ChatColor.YELLOW + " Usage: /si [run]");
+	 						sender.sendMessage(ChatColor.YELLOW + "   run: Force Interest gain for online players.");
+	 						return true;
+	 					}
 	 				} else {
 	 					if (sender instanceof ConsoleCommandSender) {
-	 						sender.sendMessage("Simple Interest:");
+		 					if(args.length != 1) {
+		 						sender.sendMessage("Simple Interest:");
+		 						sender.sendMessage(" Usage: /si [run]");
+		 						sender.sendMessage("   run: Force Interest gain for online players.");
+		 						return true;
+		 					}
+		 						if(args[0].equalsIgnoreCase("run")) {
+		 							processInterest();
+		 							sender.sendMessage("Interest cycle forced");
+		 							return true;
+		 					}
 	 					}
 	 				return true;
 	 				}
 	 			}
 	 	return false;
-	 			}
+	 }
 	
 	 private boolean setupEconomy() {
 	        if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -69,26 +89,38 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	        }
 	        econ = rsp.getProvider();
 	        return econ != null;
-	    }
+	 }
 	 
 	 private boolean setupPermissions() {
 	        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
 	        perms = rsp.getProvider();
 	        return perms != null;
-	    }
+	 }
 	 
 	 private void processInterest() {
 		 double bal, gained;
 		 
-		 for(Player player : getServer().getOnlinePlayers()) {			 
-			 	bal = econ.getBalance(player.getPlayerListName());
-			 	gained = Math.floor((bal * Config.interest));
-			 	player.sendMessage("* gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
-			 	econ.depositPlayer(player.getPlayerListName(), gained);
-			 	log.info("Player " + player.getPlayerListName() + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
-		}
-	 }
-	 }
+		 if(getServer().getOnlinePlayers().length == 0) {
+			 	log.info("No Interest Processed: No Players online.");
+		 }
+		 
+		 if(getServer().getOnlinePlayers().length >= 1) {
+			 
+			 for(Player player : getServer().getOnlinePlayers()) {			 
+			 	
+				 bal = econ.getBalance(player.getPlayerListName());
+			 	
+				 gained = Math.floor((bal * Config.interest));
+			 	
+				 player.sendMessage("* gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
+				 
+				 econ.depositPlayer(player.getPlayerListName(), gained);
+			 	
+				 log.info("Player " + player.getPlayerListName() + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
+			 }
+		 }
+	}
+}
 
 
 
