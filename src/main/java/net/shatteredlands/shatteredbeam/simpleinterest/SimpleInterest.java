@@ -1,6 +1,8 @@
 package net.shatteredlands.shatteredbeam.simpleinterest;
 
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -20,7 +22,7 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onEnable() {
-		// Perform on plugin disable.
+		// Perform on enable.
 		if (!setupEconomy()) {
 			log.severe(getDescription().getFullName() + " Disabled; Vault not found.");
 			getServer().getPluginManager().disablePlugin(this);
@@ -29,13 +31,11 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 		
 		Config.load(this);
 		
-		//getServer().getPluginManager().registerEvents(this, this);
-		
 		log.info(getDescription().getFullName() + " Loaded.");
 	}
 	
 	public void onDisable() {
-		// Perform on plugin disable.
+		// Perform on disable.
 		
 		log.info(getDescription().getFullName() + " Unloaded.");
 	}
@@ -77,6 +77,21 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 		 							sender.sendMessage("Interest cycle forced");
 		 							return true;
 		 					}
+		 						
+		 						if(args[0].equalsIgnoreCase("force")) {
+			 						this.processSingle("test");
+			 					}
+		 						
+		 						if(args[0].equalsIgnoreCase("check")) {
+		 							if (args.length < 2) return false;
+		 							
+		 							if (econ.hasAccount(args[1])) {
+		 								sender.sendMessage(args[1] + "has an account.");
+		 								return true;
+		 							} else { 
+		 								sender.sendMessage(args[1] + "does NOT have an account.");
+		 								return false; }
+		 						}
 	 					}
 	 				return true;
 	 				}
@@ -105,6 +120,8 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	 public void processInterest() {
 		 double bal, gained;
 		 
+		 NumberFormat formatter = new DecimalFormat("#.##");
+		 
 		 if(getServer().getOnlinePlayers().length == 0) {
 			 	log.info("No Interest Processed: No Players online.");
 		 }
@@ -115,13 +132,17 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 			 	
 				 bal = econ.getBalance(player.getPlayerListName());
 			 	
-				 gained = Math.floor((bal * Config.interest));
+				 gained = bal * ( 1 * Config.interest);
 			 	
-				 player.sendMessage("* gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
+				 if (gained == 0) {
+					 player.sendMessage("Interest: You gained no interest this cycle.");
+				 } else {
+					 player.sendMessage("* You gained " + formatter.format(gained) + " " + econ.currencyNamePlural() + " in interest.");
+				 }
 				 
 				 econ.depositPlayer(player.getPlayerListName(), gained);
 			 	
-				 log.info("Player " + player.getPlayerListName() + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
+				 log.info("Player " + player.getPlayerListName() + " gained " + formatter.format(gained) + " " + econ.currencyNamePlural() + " in Interest.");
 			 }
 		 }
 	 }
@@ -129,17 +150,24 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	 public void processSingle(String player) {
 		 double bal, gained;
 		 
-		 if (!econ.hasAccount(player)) {
+		 NumberFormat formatter = new DecimalFormat("#.##");
+		 
+		 if (econ.hasAccount(player)) {
 			 bal = econ.getBalance(player);
 			 
-			 gained = Math.floor((bal * Config.interest));
+			 gained = bal * ( 1 * Config.interest);
+			 
+			 if (gained == 0) {
+				 log.info("SimpleInterest: " + player + " gained no interest.");
+			 } else {
+				 log.info("SimpleInterest: Player " + player + " gained " + formatter.format(gained) + " " + econ.currencyNamePlural() + " in Interest.");
+			 }
 			 
 			 econ.depositPlayer(player, gained);
 			 
-			 log.info("Player " + player + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
 			 
 		 } else {
-			 log.info("Player " + player + " not found or No account");
+			 log.info("SimpleInterest: Player " + player + " not found or no account");
 		 }
 	 }
 }
