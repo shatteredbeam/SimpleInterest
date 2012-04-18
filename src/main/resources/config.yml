@@ -1,6 +1,28 @@
 # SimpleInterest Config File
-#Interest rate should be a decimal below 1. Use 1 for 100% interest (double money)
+# --------------------------
+
+# ---------------------
+# Configuration Options
+# ---------------------
+#
+#    Interest is calculated by treating the decimal below as a percentage, and applying that percentage
+# to the balance the player currently holds.
+#
+# Example: 1.0 would be 100% interest, doubling a players' holdings when run.
+#          0.5 = 50%
+#          0.1 = 10%
+#          0.01 = 1%
+#          0.001 = 0.1%
+#
+# Interest is calculated to two decimal places, anything below that is rounded up to the next 1/100th.
+# The name of your currency will automatically be applied to log and player messages.
+#
+# Players will be informed of their interest gain, even if zero.
+# 
+#     Interval is the period between interest gains.  Interest will be calculated and processed each Interval, in minutes.
+# 60 for one hour (default), use whole numbers only.
+#
+# ---------------------
 General:
-    Version: 0.1
-    InterestRate: .031
-    
+    InterestRate: 0.05
+    Interval: 60

@@ -3,16 +3,4 @@ main: net.shatteredlands.shatteredbeam.simpleinterest.SimpleInterest
 version: ${project.version}
 softdepend: [Vault]
 author: Shatteredbeam
-description: SimpleInterest is a simple way to aggregate interest in player iConomy accounts at a regular interval.  Maven is required to compile Simple Interest.
-
-commands:
-    si:
-        description: Shows basic information and usage for SimpleInterest.
-        usage: /<command>
-        permission: si.run
-        permission-message: You do not have permission to run that command.
-        
-permissions:
-    si.run:
-        description: run the process interest command.
-        default: op
+description: SimpleInterest is a simple way to aggregate interest in player economy accounts at a regular interval.
