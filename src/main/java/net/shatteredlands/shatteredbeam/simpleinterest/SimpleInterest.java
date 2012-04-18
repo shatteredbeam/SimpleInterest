@@ -5,10 +5,10 @@ import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 		
 		Config.load(this);
 		
-		getServer().getPluginManager().registerEvents(this, this);
+		//getServer().getPluginManager().registerEvents(this, this);
 		
 		log.info(getDescription().getFullName() + " Loaded.");
 	}
@@ -42,19 +42,22 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 		log.info(getDescription().getFullName() + " Unloaded.");
 	}
 	
-	 
+	 @Override
 	 public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-	 		Player player = null;
-	 			if (sender instanceof Player) {
-	 				player = (Player) sender;
-	 			}
-	 			
 	 			if(command.getName().equalsIgnoreCase("si")) {
-	 				sender.sendMessage(ChatColor.YELLOW + "[ = = = Simple Interest = = = = ]");
+	 				
+	 				if (sender instanceof Player) {
+	 					Player player = (Player) sender;
+	 					sender.sendMessage(ChatColor.YELLOW + "Simple Interest:");
+	 				} else {
+	 					if (sender instanceof ConsoleCommandSender) {
+	 						sender.sendMessage("Simple Interest:");
+	 					}
 	 				return true;
+	 				}
 	 			}
-	 return false;			
-	}
+	 	return false;
+	 			}
 	
 	 private boolean setupEconomy() {
 	        if (getServer().getPluginManager().getPlugin("Vault") == null) {
