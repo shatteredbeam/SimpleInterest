@@ -44,13 +44,18 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	 @SuppressWarnings("unused")
 	 public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	 			if(command.getName().equalsIgnoreCase("si")) {
-	 				
+	 			
+	 			if(args.length == 0) { return false; }
+	 			
 	 				if (sender instanceof Player) {
 	 					Player player = (Player) sender;
 	 					
 	 					if(args[0].equalsIgnoreCase("run")) {
-	 						processInterest();
-	 						sender.sendMessage("Interest cycle forced");
+	 						this.processInterest();
+	 					}
+	 					
+	 					if(args[0].equalsIgnoreCase("force")) {
+	 						this.processSingle("test");
 	 					}
 	 					
 	 					if(args.length != 1) {
@@ -97,7 +102,7 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 	        return perms != null;
 	 }
 	 
-	 private void processInterest() {
+	 public void processInterest() {
 		 double bal, gained;
 		 
 		 if(getServer().getOnlinePlayers().length == 0) {
@@ -119,7 +124,24 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 				 log.info("Player " + player.getPlayerListName() + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
 			 }
 		 }
-	}
+	 }
+	 
+	 public void processSingle(String player) {
+		 double bal, gained;
+		 
+		 if (!econ.hasAccount(player)) {
+			 bal = econ.getBalance(player);
+			 
+			 gained = Math.floor((bal * Config.interest));
+			 
+			 econ.depositPlayer(player, gained);
+			 
+			 log.info("Player " + player + " gained " + gained + " " + econ.currencyNamePlural() + " in Interest.");
+			 
+		 } else {
+			 log.info("Player " + player + " not found or No account");
+		 }
+	 }
 }
 
 
