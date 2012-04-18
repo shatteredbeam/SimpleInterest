@@ -86,7 +86,7 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 		 
 		 if(getServer().getOnlinePlayers().length == 0) {
 			 
-			 	log.info("No Interest Processed: No Players online.");
+			 	log.info("[SimpleInterest] No players online to process.");
 			 	
 		 }
 		 
@@ -100,16 +100,16 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 			 	
 				 	if (gained == 0) {
 					 
-				 		player.sendMessage(ChatColor.AQUA + "* You gained no interest this cycle.");
+				 		player.sendMessage(ChatColor.AQUA + "* You earned no interest this cycle.");
 					 
 				 	} else {
 					 
-				 		player.sendMessage(ChatColor.AQUA + "* You gained " + formatter.format(gained) + " " + econ.currencyNamePlural() + " in interest.");
+				 		player.sendMessage(ChatColor.AQUA + "* You earned " + formatter.format(gained) + " " + econ.currencyNamePlural() + "");
 				 	}
 				 
 				 econ.depositPlayer(player.getPlayerListName(), gained);
 			 	
-				 log.info("Player " + player.getPlayerListName() + " gained " + formatter.format(gained) + " " + econ.currencyNamePlural() + " in Interest.");
+				 log.info("[SimpleInterest] " + player.getPlayerListName() + " earned " + formatter.format(gained));
 			 }
 		 }
 	 }
