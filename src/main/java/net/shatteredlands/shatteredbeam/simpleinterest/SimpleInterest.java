@@ -3,6 +3,8 @@ package net.shatteredlands.shatteredbeam.simpleinterest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.logging.Logger;
+
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +23,7 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 		Integer interval = null;
 		
 		if (!setupEconomy()) {
+			
 			log.severe(getDescription().getFullName() + " Disabled; Vault or Economy Plugin Not found.");
 			
 			getServer().getPluginManager().disablePlugin(this);
@@ -97,11 +100,11 @@ public class SimpleInterest extends JavaPlugin implements Listener {
 			 	
 				 	if (gained == 0) {
 					 
-				 		player.sendMessage("Interest: You gained no interest this cycle.");
+				 		player.sendMessage(ChatColor.AQUA + "* You gained no interest this cycle.");
 					 
 				 	} else {
 					 
-				 		player.sendMessage("* You gained " + formatter.format(gained) + " " + econ.currencyNamePlural() + " in interest.");
+				 		player.sendMessage(ChatColor.AQUA + "* You gained " + formatter.format(gained) + " " + econ.currencyNamePlural() + " in interest.");
 				 	}
 				 
 				 econ.depositPlayer(player.getPlayerListName(), gained);
